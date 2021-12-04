@@ -1,0 +1,20 @@
+.App {
+  overflow-x: hidden;
+  text-align: center;
+  min-height: 100vh;
+  background-color: #282c34;
+}
+.btn {
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &-inactive {
+    cursor: auto !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+.cursor-pointer{
+  cursor: pointer;
+}

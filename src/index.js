@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './index.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import App from './components/app';
+import { Provider } from 'react-redux';
+import store from './store';
+import ErrorBoundry from './components/error-boundry';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ErrorBoundry>
+        <Router basename={process.env.PUBLIC_URL}>
+          <App />
+        </Router>
+      </ErrorBoundry>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
