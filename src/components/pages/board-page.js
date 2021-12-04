@@ -1,13 +1,10 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import { connect } from 'react-redux';
-import InboardListAddForm from '../inboard-list-add-form';
 import InboardList from '../inboard-list/inboard-list';
+import InboardListAddButton from '../inboard-list-add-button/inboard-list-add-button';
 
 const BoardPage = ({ boards }) => {
-	const [ listAddFormDisplay, toggleListAddFormDisplay ] = useState(false);
-	const onToggleListAddFormDisplay = () => toggleListAddFormDisplay(!listAddFormDisplay);
 	const { boardId } = useParams();
 	const board = boards.find(board => board.id === +boardId);
 
@@ -15,13 +12,6 @@ const BoardPage = ({ boards }) => {
 		? null
 		: board.lists.map(list => <InboardList key={list.id} boardId={boardId} list={list} />);
 
-	const listAddSection = listAddFormDisplay
-		? <InboardListAddForm boardId={boardId} listNum={board.lists.length + 1} closeFunc={onToggleListAddFormDisplay} />
-		: <button
-				className="btn btn-primary container-fluid py-3"
-				onClick={onToggleListAddFormDisplay}>
-					Добавить список
-			</button>;
 
 	return (
 		<>
@@ -33,7 +23,7 @@ const BoardPage = ({ boards }) => {
 			<Row className="mb-3">
 				{inboardLists}
 				<Col className="col-3 text-start">
-					{listAddSection}
+					<InboardListAddButton boardId={boardId} listNum={board.lists.length + 1} />
 				</Col>
 			</Row>
 		</>

@@ -11,6 +11,10 @@ const reducer = (state = initialState, action) => {
 				boardAddFormDisplay: !state.boardAddFormDisplay
 			};
 		case 'ADD_BOARD':
+			if (state.boards.findIndex(board => board.name === action.payload) >= 0) {
+				alert("Доска с таким именем уже существует! Введите другое название.");
+				return {...state};
+			}
 			return {
 				...state,
 				boards: [
@@ -78,6 +82,7 @@ const reducer = (state = initialState, action) => {
 			const updatingList = { ...updatingBoard.lists[boardListIndex] };
 			const boardListItemIndex = updatingList.items.findIndex(item => item.id == payload.boardListItemId);
 			const updatingItem = { ...updatingList.items[boardListItemIndex] };
+			
 			updatingItem.checked = !updatingItem.checked;
 
 			updatingList.items = [

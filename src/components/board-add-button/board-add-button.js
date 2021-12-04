@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux';
 import { toggleBoardAddFormDisplay } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import './board-add-button.scss';
 
 const BoardAddButton = ({ boardAddFormDisplay, toggleBoardAddFormDisplay }) => {
-	let buttonClass = "col-6 btn btn-success btn-lg btn-add-form"
+	let buttonClass = "col-6 btn btn-success btn-lg text-start px-4"
 	if (boardAddFormDisplay) buttonClass+= " btn-inactive";
 	const toggleFunc = !boardAddFormDisplay ? () => toggleBoardAddFormDisplay() : () => {};
 	const closeIcon = boardAddFormDisplay ? <FontAwesomeIcon icon={faTimes} size="lg" /> : null;
@@ -17,7 +16,7 @@ const BoardAddButton = ({ boardAddFormDisplay, toggleBoardAddFormDisplay }) => {
 		onClick={toggleFunc}>
 			<FontAwesomeIcon icon={faPlus} size="lg" />	Новая доска
 			<span
-			className="btn-add-form__icon"
+			className="float-end cursor-pointer"
 			onClick={() => toggleBoardAddFormDisplay()}>
 				{closeIcon}
 			</span>

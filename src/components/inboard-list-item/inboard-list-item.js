@@ -12,7 +12,7 @@ const InboardListItem = ({ boardId, listId, item, toggleBoardListItem }) => {
 	className += item.checked ? " bg-secondary" : " bg-danger";
 
 	return (
-		<li className={className}>
+		<li className={className} draggable>
 			{item.name}
 			<span
 			className="float-end cursor-pointer"

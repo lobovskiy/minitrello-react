@@ -6,14 +6,14 @@ const BoardsList = ({ boards }) => {
 	const boardsList = !boards.length
 		? <p className="text-light">Здесь пока ничего нет...</p>
 		: <ul className="list-group justify-content-center">
-			{boards.map(({ id, name }) => {
-				return (
-					<Link to={`/board_${id}`} key={id} className="col-6 mb-3 rounded">
-						<li className="col-12 btn btn-success btn-lg py-4">{name}</li>
-					</Link>
-				)
-			})}
-		</ul>;
+				{boards.map(({ id, name }) => {
+					return (
+						<Link to={`/board_${id}`} key={id} className="col-6 mb-3 rounded">
+							<li className="col-12 btn btn-success btn-lg py-4">{name}</li>
+						</Link>
+					)
+				})}
+			</ul>;
 
 	return (
 		<>

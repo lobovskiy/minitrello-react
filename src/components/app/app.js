@@ -8,10 +8,10 @@ function App() {
     <div className="App">
       <div className="container">
         <AppHeader/>
-          <Routes>
-            <Route path='/' element={<MainPage/>} />
-            <Route path='/board_:boardId' element={<BoardPage/>} />
-          </Routes>
+        <Routes>
+          <Route path='/' element={<MainPage/>} />
+          <Route path='/board_:boardId' element={<BoardPage/>} />
+        </Routes>
       </div>
     </div>
   );
