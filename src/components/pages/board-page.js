@@ -10,7 +10,7 @@ const BoardPage = ({ boards }) => {
 
 	const inboardLists = !board.lists.length
 		? null
-		: board.lists.map(list => <InboardList key={list.id} boardId={boardId} list={list} />);
+		: board.lists.map(list => <InboardList key={list.id} boardId={+boardId} list={list} />);
 
 
 	return (
@@ -23,7 +23,7 @@ const BoardPage = ({ boards }) => {
 			<Row className="mb-3">
 				{inboardLists}
 				<Col className="col-3 text-start">
-					<InboardListAddButton boardId={boardId} listNum={board.lists.length + 1} />
+					<InboardListAddButton boardId={+boardId} listNum={board.lists.length + 1} />
 				</Col>
 			</Row>
 		</>

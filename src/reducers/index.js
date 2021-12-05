@@ -1,6 +1,11 @@
 const initialState = {
 	boards: [],
-	boardAddFormDisplay: false
+	boardAddFormDisplay: false,
+	draggedId: {
+		board: null,
+		list: null,
+		item: null
+	}
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,7 +32,7 @@ const reducer = (state = initialState, action) => {
 				]
 			};
 		case 'ADD_BOARD_LIST': {
-			const boardIndex = state.boards.findIndex(board => board.id == action.payload.boardId);
+			const boardIndex = state.boards.findIndex(board => board.id === action.payload.boardId);
 			const updatingBoard = { ...state.boards[boardIndex] };
 			const newList = {
 				id: updatingBoard.lists.length + 1,
@@ -47,9 +52,9 @@ const reducer = (state = initialState, action) => {
 		}
 		case 'ADD_BOARD_LIST_ITEM': {
 			const { payload } = action;
-			const boardIndex = state.boards.findIndex(board => board.id == payload.boardId);
+			const boardIndex = state.boards.findIndex(board => board.id === payload.boardId);
 			const updatingBoard = { ...state.boards[boardIndex] };
-			const boardListIndex = updatingBoard.lists.findIndex(list => list.id == payload.boardListId);
+			const boardListIndex = updatingBoard.lists.findIndex(list => list.id === payload.boardListId);
 			const updatingList = { ...updatingBoard.lists[boardListIndex] };
 			
 			const newItem = {
@@ -57,7 +62,7 @@ const reducer = (state = initialState, action) => {
 				name: payload.boardListItemName,
 				checked: false
 			}
-			updatingList.items.push(newItem);
+			updatingList.items.splice(0, 0, newItem);
 
 			updatingBoard.lists = [
 				...updatingBoard.lists.slice(0, boardListIndex),
@@ -76,11 +81,11 @@ const reducer = (state = initialState, action) => {
 		}
 		case 'TOGGLE_BOARD_LIST_ITEM': {
 			const { payload } = action;
-			const boardIndex = state.boards.findIndex(board => board.id == payload.boardId);
+			const boardIndex = state.boards.findIndex(board => board.id === payload.boardId);
 			const updatingBoard = { ...state.boards[boardIndex] };
-			const boardListIndex = updatingBoard.lists.findIndex(list => list.id == payload.boardListId);
+			const boardListIndex = updatingBoard.lists.findIndex(list => list.id === payload.boardListId);
 			const updatingList = { ...updatingBoard.lists[boardListIndex] };
-			const boardListItemIndex = updatingList.items.findIndex(item => item.id == payload.boardListItemId);
+			const boardListItemIndex = updatingList.items.findIndex(item => item.id === payload.boardListItemId);
 			const updatingItem = { ...updatingList.items[boardListItemIndex] };
 			
 			updatingItem.checked = !updatingItem.checked;
@@ -100,6 +105,72 @@ const reducer = (state = initialState, action) => {
 				updatingBoard,
 				...state.boards.slice(boardIndex + 1)
 			];
+			return {
+				...state,
+				boards: newData
+			};
+		}
+		case 'SET_DRAGGED_ID':
+			const { payload } = action;
+			return {
+				...state,
+				draggedId: {
+					board: payload.boardId,
+					list: payload.boardListId,
+					item: payload.boardListItemId
+				}
+			};
+		case 'DROP_ITEM': {
+			const { payload } = action;
+			const boardIndex = state.boards.findIndex(board => board.id === state.draggedId.board);
+			const updatingBoard = { ...state.boards[boardIndex] };
+
+			const draggedListIndex = updatingBoard.lists.findIndex(list => list.id === state.draggedId.list);
+			const draggedList = { ...updatingBoard.lists[draggedListIndex] };
+
+			const draggedItemIndex = draggedList.items.findIndex(item => item.id === state.draggedId.item);
+			const draggedItem = { ...draggedList.items[draggedItemIndex] };
+
+			const currentListIndex = updatingBoard.lists.findIndex(list => list.id === payload.boardListId);
+			const currentList = { ...updatingBoard.lists[currentListIndex] };
+
+			const currentItemIndex = currentList.items.findIndex(item => item.id === payload.boardListItemId);
+						
+			if (draggedListIndex === currentListIndex && draggedItemIndex - currentItemIndex < -1) {
+				currentList.items.splice(draggedItemIndex, 1);
+				currentList.items.splice(currentItemIndex - 1, 0, draggedItem);
+			} else {
+				draggedList.items.splice(draggedItemIndex, 1);
+				currentItemIndex === -1
+					? currentList.items.push(draggedItem)
+					: currentList.items.splice(currentItemIndex, 0, draggedItem)
+			}
+
+			for (let i = 0; i < currentList.items.length; i++) {
+				updatingBoard.lists[currentListIndex].items[i].id = i + 1;
+			}
+
+			for (let i = 0; i < draggedList.items.length; i++) {
+				updatingBoard.lists[draggedListIndex].items[i].id = i + 1;
+			}
+
+			updatingBoard.lists = [
+				...updatingBoard.lists.slice(0, currentListIndex),
+				currentList,
+				...updatingBoard.lists.slice(currentListIndex + 1)
+			]
+			updatingBoard.lists = [
+				...updatingBoard.lists.slice(0, draggedListIndex),
+				draggedList,
+				...updatingBoard.lists.slice(draggedListIndex + 1)
+			]
+
+			const newData = [
+				...state.boards.slice(0, boardIndex),
+				updatingBoard,
+				...state.boards.slice(boardIndex + 1)
+			];
+
 			return {
 				...state,
 				boards: newData

@@ -18,11 +18,25 @@ const toggleBoardListItem = (boardId, boardListId, boardListItemId) => {
 		payload: { boardId, boardListId, boardListItemId }
 	}
 };
+const setDraggedId = (boardId, boardListId, boardListItemId) => {
+	return {
+		type: 'SET_DRAGGED_ID',
+		payload: { boardId, boardListId, boardListItemId }
+	}
+};
+const dropItem = (boardListId, boardListItemId) => {
+	return {
+		type: 'DROP_ITEM',
+		payload: { boardListId, boardListItemId }
+	}
+};
 
 export {
 	toggleBoardAddFormDisplay,
 	addBoard,
 	addBoardList,
 	addBoardListItem,
-	toggleBoardListItem
+	toggleBoardListItem,
+	setDraggedId,
+	dropItem
 }

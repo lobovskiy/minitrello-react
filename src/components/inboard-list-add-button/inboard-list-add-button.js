@@ -23,7 +23,7 @@ const InboardListAddButton = ({ boardId, listNum, addBoardList }) => {
 	
 	return (
 		<div className="bg-light px-4 rounded">
-			<div className="text-end py-2">
+			<div className="text-end pt-3">
 				<span className="cursor-pointer" onClick={onToggleListAddFormDisplay}>
 					<FontAwesomeIcon icon={faTimes} size="lg" />
 				</span>
