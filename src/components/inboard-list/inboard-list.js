@@ -7,6 +7,8 @@ import AddForm from '../add-form';
 const InboardList = ({ boardId, list }) => {
 	const dispatch = useDispatch();
 
+	// При наличии элементов в массиве items внутри списка формируем список элементов,
+	// сохраняем ID доски, списка и элемента
 	const items = !list.items.length
 		? null
 		: <ul className="p-0 m-0">
@@ -21,6 +23,9 @@ const InboardList = ({ boardId, list }) => {
 					)
 				})}
 			</ul>;
+
+	// Создаем обработчики для сброса перетаскиваемого элемента списка прямо в список
+	// (не на место другого конкретного элемента, в т.ч. в пустой список)
 
 	function dragOverHandler(e) {
 		e.preventDefault();
@@ -37,6 +42,8 @@ const InboardList = ({ boardId, list }) => {
 		e.currentTarget.style.outline = 'none';
 	}
 
+	// При сбросе элемента на список, но не на другой элемент, выполняем action dropItem, передавая в reducer
+	// только ID элемента - в этом случае reducer будет добавлять элемент просто в конец списка
 	function dropItemHandler(e, listId) {
 		e.preventDefault();
 		e.currentTarget.style.outline = 'none';
@@ -45,6 +52,8 @@ const InboardList = ({ boardId, list }) => {
 		}
 	}
 
+	// Отображаем список с названием, формой добаления элемента и существующими элементами,
+	// в форму в качестве функции для submit передаем action создания элемента, в которую форма подставит текст
 	return (
 		<Col className="col-3 mb-3">
 			<div

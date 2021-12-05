@@ -10,6 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import reportWebVitals from './reportWebVitals';
 
+// В роутере в качестве базового URL задаем адрес, прописанный в package.json в параметре "homepage" 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -5,9 +5,13 @@ import AddForm from "../add-form";
 import './board-add-block.scss';
 
 const BoardAddBlock = () => {
+	// Используем хуки для связи с Redux store
 	const boardAddFormDisplay = useSelector(state => state.boardAddFormDisplay);
 	const dispatch = useDispatch();
 
+	// Задаем отображение формы добавления доски по значению свойства boardAddFormDisplay в state.
+	// В форму в качестве функции для submit передаем action создания доски, в которую форма подставит текст,
+	// и в качестве функции отмены передаем action переключения boardAddFormDisplay
 	const boardAddForm = !boardAddFormDisplay
 		? null
 		: <div className="col-6 add-form rounded mb-3 px-4 pb-3">
@@ -16,11 +20,12 @@ const BoardAddBlock = () => {
 					placeholder="Введите название"
 					inputLabel="Название доски"
 					submitFunc={input => dispatch(addBoard(input))}
-					closeFormFunc={() => dispatch(toggleBoardAddFormDisplay())}
+					closeFunc={() => dispatch(toggleBoardAddFormDisplay())}
 					submitButton="Сохранить"
 				/>
 			</div>;
 
+	// Отображаем кнопку открытия формы и саму форму, если boardAddFormDisplay == true
 	return (
 		<>
 			<BoardAddButton />

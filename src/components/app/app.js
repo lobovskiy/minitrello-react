@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { MainPage, BoardPage } from '../pages';
 import './app.scss';
 
+// Роутером делим приложение на 2 страницы: главную и страницу текущей доски по ее ID,
+// который берем из сегмента пути и сохраняем в параметрах роутера
 function App() {
   return (
     <div className="App">

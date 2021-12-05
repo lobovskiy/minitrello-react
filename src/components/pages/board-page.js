@@ -6,15 +6,19 @@ import InboardListAddButton from '../inboard-list-add-button/inboard-list-add-bu
 
 const BoardPage = () => {
 	const boards = useSelector(state => state.boards);
+	
+	// получаем доску по ее ID из параметров роутера
 	const { boardId } = useParams();
-
 	const board = boards.find(board => board.id === +boardId);
 
+	// При наличии списков в массиве lists внутри доски отображаем списки компонентами InboardList.
+	// Сохраняем им в props ID доски и объект с содержимым списка
 	const inboardLists = !board.lists.length
 		? null
 		: board.lists.map(list => <InboardList key={list.id} boardId={+boardId} list={list} />);
 
-
+	// После списков отображаем кнопку добавления нового списка,
+	// также сохраняем ID доски и количество существующих списков (для счетчика в плэйсхолдере)
 	return (
 		<>
 			<Row className="mb-4">
