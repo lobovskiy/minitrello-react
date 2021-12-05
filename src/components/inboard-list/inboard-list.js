@@ -1,11 +1,11 @@
+import { useDispatch } from 'react-redux';
 import { Col } from 'reactstrap';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { addBoardListItem, dropItem } from '../../actions';
 import InboardListItem from '../inboard-list-item';
 import AddForm from '../add-form';
 
-const InboardList = ({ boardId, list, addBoardListItem, dropItem }) => {
+const InboardList = ({ boardId, list }) => {
+	const dispatch = useDispatch();
 
 	const items = !list.items.length
 		? null
@@ -41,7 +41,7 @@ const InboardList = ({ boardId, list, addBoardListItem, dropItem }) => {
 		e.preventDefault();
 		e.currentTarget.style.outline = 'none';
 		if (e.target && !e.target.matches('li.item')) {
-			dropItem(listId);
+			dispatch(dropItem(listId));
 		}
 	}
 
@@ -56,9 +56,8 @@ const InboardList = ({ boardId, list, addBoardListItem, dropItem }) => {
 			>
 				<h4>{list.name}</h4>
 				<AddForm
-					id="inboardListItemName"
-					submitFunc={addBoardListItem}
-					submitArguments={[boardId, list.id]}
+					id="inboard-list-item__name"
+					submitFunc={input => dispatch(addBoardListItem(input, boardId, list.id))}
 				/>
 				{items}
 			</div>
@@ -66,6 +65,4 @@ const InboardList = ({ boardId, list, addBoardListItem, dropItem }) => {
 	)
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ addBoardListItem, dropItem }, dispatch);
-
-export default connect(null, mapDispatchToProps)(InboardList);
+export default InboardList;

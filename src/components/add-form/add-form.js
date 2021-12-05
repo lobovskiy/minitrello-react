@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
 export default class AddForm extends Component {
@@ -6,16 +7,19 @@ export default class AddForm extends Component {
 		text: ''
 	}
 
-	onUpdateText = event => {
+	static propTypes = {
+		submitFunc: PropTypes.func,
+		closeFormFunc: PropTypes.func
+	}
+
+	updateTextHandler = event => {
 		this.setState({text: event.target.value});
 	}
 
-	onSubmit = event => {
-		const { submitFunc, submitArguments, closeFormFunc } = this.props;
+	submitHandler = event => {
+		const { submitFunc, closeFormFunc } = this.props;
 		event.preventDefault();
-		submitArguments
-			? submitFunc(this.state.text, ...submitArguments)
-			: submitFunc(this.state.text);
+		submitFunc(this.state.text);
 		this.setState({text: ''});
 		if (closeFormFunc) closeFormFunc();
 	}
@@ -33,12 +37,16 @@ export default class AddForm extends Component {
 			: null;
 
 		return (
-			<Form className="bg-light py-2 rounded" onSubmit={this.onSubmit}>
+			<Form className="bg-light py-2 rounded" onSubmit={this.submitHandler}>
 				<FormGroup>
 					{label}
-					<Input required type="name" name="name" id={id} placeholder={placeholder}
-						onChange={this.onUpdateText}
-						value={this.state.text} />
+					<Input
+						required type="name" name="name"
+						id={id}
+						placeholder={placeholder}
+						onChange={this.updateTextHandler}
+						value={this.state.text}
+					/>
 				</FormGroup>
 				{buttons}
 			</Form>

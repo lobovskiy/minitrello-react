@@ -1,8 +1,10 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './boards-list.scss'
 
-const BoardsList = ({ boards }) => {
+const BoardsList = () => {
+	const boards = useSelector(state => state.boards);
+
 	const boardsList = !boards.length
 		? <p className="text-light">Здесь пока ничего нет...</p>
 		: <ul className="list-group justify-content-center">
@@ -23,6 +25,4 @@ const BoardsList = ({ boards }) => {
 	)
 }
 
-const mapStateToProps = ({ boards }) => ({ boards });
-
-export default connect(mapStateToProps)(BoardsList);
+export default BoardsList;

@@ -1,19 +1,22 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toggleBoardAddFormDisplay, addBoard } from '../../actions';
 import BoardAddButton from "../board-add-button";
 import AddForm from "../add-form";
 import './board-add-block.scss';
 
-const BoardAddBlock = ({ boardAddFormDisplay, toggleBoardAddFormDisplay, addBoard }) => {
+const BoardAddBlock = () => {
+	const boardAddFormDisplay = useSelector(state => state.boardAddFormDisplay);
+	const dispatch = useDispatch();
+
 	const boardAddForm = !boardAddFormDisplay
 		? null
 		: <div className="col-6 add-form rounded mb-3 px-4 pb-3">
 				<AddForm
-					id="inboardListItemName"
+					id="board__name"
+					placeholder="Введите название"
 					inputLabel="Название доски"
-					submitFunc={addBoard}
-					closeFormFunc={toggleBoardAddFormDisplay}
+					submitFunc={input => dispatch(addBoard(input))}
+					closeFormFunc={() => dispatch(toggleBoardAddFormDisplay())}
 					submitButton="Сохранить"
 				/>
 			</div>;
@@ -26,7 +29,4 @@ const BoardAddBlock = ({ boardAddFormDisplay, toggleBoardAddFormDisplay, addBoar
 	)
 }
 
-const mapStateToProps = ({ boardAddFormDisplay }) => ({ boardAddFormDisplay });
-const mapDispatchToProps = dispatch => bindActionCreators({ toggleBoardAddFormDisplay, addBoard }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(BoardAddBlock);
+export default BoardAddBlock;

@@ -1,13 +1,12 @@
+import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { toggleBoardListItem, setDraggedId, dropItem } from '../../actions';
 
-const InboardListItem = ({ boardId, listId, item, toggleBoardListItem, setDraggedId, dropItem }) => {
-	const onToggleItem = () => {
-		toggleBoardListItem(boardId, listId, item.id);
-	}
+const InboardListItem = ({ boardId, listId, item }) => {
+	const dispatch = useDispatch();
+
+	const onToggleItem = () => dispatch(toggleBoardListItem(boardId, listId, item.id));
 	let className = "item text-light text-start rounded mb-3 p-2 cursor-grab";
 	className += item.checked ? " bg-secondary" : " bg-danger";
 
@@ -23,7 +22,7 @@ const InboardListItem = ({ boardId, listId, item, toggleBoardListItem, setDragge
 	}
 
 	function dragStartHandler(e, boardId, listId, itemId) {
-		setDraggedId(boardId, listId, itemId);
+		dispatch(setDraggedId(boardId, listId, itemId));
 	}
 
 	function dragEndHandler(e) {
@@ -34,7 +33,7 @@ const InboardListItem = ({ boardId, listId, item, toggleBoardListItem, setDragge
 		e.preventDefault();
 		e.target.style.boxShadow = 'none';
 		if (e.target && e.target.matches('li.item')) {
-			dropItem(listId, itemId);
+			dispatch(dropItem(listId, itemId));
 		}
 	}
 
@@ -49,15 +48,11 @@ const InboardListItem = ({ boardId, listId, item, toggleBoardListItem, setDragge
 			draggable
 		>
 			{item.name}
-			<span
-			className="float-end cursor-pointer"
-			onClick={onToggleItem}>
+			<span className="float-end cursor-pointer" onClick={onToggleItem}>
 				<FontAwesomeIcon icon={faCheck} size="lg" />
 			</span>
 		</li>
 	)
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ toggleBoardListItem, setDraggedId, dropItem }, dispatch);
-
-export default connect(null, mapDispatchToProps)(InboardListItem);
+export default InboardListItem;

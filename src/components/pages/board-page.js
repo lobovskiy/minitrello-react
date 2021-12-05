@@ -1,11 +1,13 @@
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
-import { connect } from 'react-redux';
 import InboardList from '../inboard-list/inboard-list';
 import InboardListAddButton from '../inboard-list-add-button/inboard-list-add-button';
 
-const BoardPage = ({ boards }) => {
+const BoardPage = () => {
+	const boards = useSelector(state => state.boards);
 	const { boardId } = useParams();
+
 	const board = boards.find(board => board.id === +boardId);
 
 	const inboardLists = !board.lists.length
@@ -30,6 +32,4 @@ const BoardPage = ({ boards }) => {
 	)
 }
 
-const mapStateToProps = ({ boards }) => ({ boards })
-
-export default connect(mapStateToProps)(BoardPage);
+export default BoardPage;

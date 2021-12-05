@@ -1,22 +1,20 @@
-import { useState } from "react";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { addBoardList } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import AddForm from '../add-form';
 
-const InboardListAddButton = ({ boardId, listNum, addBoardList }) => {
+const InboardListAddButton = ({ boardId, listNum }) => {
+	const dispatch = useDispatch();
 	
 	const [ listAddFormDisplay, toggleListAddFormDisplay ] = useState(false);
 	const onToggleListAddFormDisplay = () => toggleListAddFormDisplay(!listAddFormDisplay);
 
 	if (!listAddFormDisplay) {
 		return (
-			<button
-				className="btn btn-primary container-fluid py-3"
-				onClick={onToggleListAddFormDisplay}>
-					Добавить список
+			<button	className="btn btn-primary container-fluid py-3" onClick={onToggleListAddFormDisplay}>
+				Добавить список
 			</button>
 		)
 	}
@@ -29,15 +27,12 @@ const InboardListAddButton = ({ boardId, listNum, addBoardList }) => {
 				</span>
 			</div>
 			<AddForm
-				id="inboardListName"
+				id="inboard-list__name"
 				placeholder={`Список ${listNum}`}
-				submitFunc={addBoardList}
-				submitArguments={[boardId]}
+				submitFunc={input => dispatch(addBoardList(input, boardId))}
 			/>
 		</div>
 	)
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ addBoardList }, dispatch);
-
-export default connect(null, mapDispatchToProps)(InboardListAddButton);
+export default InboardListAddButton;
